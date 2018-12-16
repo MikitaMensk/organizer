@@ -1,5 +1,36 @@
-.App {
-  text-align: center;
+
+html, body, #root {
+    height: 100%;
+}
+.container {
+  position: relative;
+  min-height: 100%;
+  background-size: cover;
+  background-color: white;
+}
+.Chrysanthemum {
+  background-image: url(images/Hydrangeas.jpg);
+}
+.Desert {
+  background-image: url(images/Desert.jpg);
+}
+.Hydrangeas {
+  background-image: url(images/Hydrangeas.jpg);
+}
+.Jellyfish {
+  background-image: url(images/Jellyfish.jpg);
+}
+.Koala {
+  background-image: url(images/Koala.jpg);
+}
+.Lighthouse {
+  background-image: url(images/Lighthouse.jpg);
+}
+.Penguins {
+  background-image: url(images/Penguins.jpg);
+}
+.Tulips {
+  background-image: url(images/Tulips.jpg);
 }
 
 .App-logo {
@@ -17,16 +48,118 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
-.App-link {
-  color: #61dafb;
+.header {
+  display: flex;
+  padding: 20px;
+  background-color: #557a95;
+}
+.header button, .header .logo {
+  height: 28px;
+  line-height: 16px;
+  margin-right: 10px;
+}
+.header select {
+  height: 24px;
+  margin-top: 2px;
+}
+.header .add-button {
+  margin-right: 120px;
+}
+.title {
+  margin: 0 40px 0 200px;
+  color: white;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.column-wrap {
+    display: flex;
+    flex-direction: row;
+    margin: 15px;
+    padding: 30px;
+}
+.column {
+    width: 200px;
+    border: 1px solid gray;
+    margin: 5px;
+    padding: 20px;
+    background-color: white;
+}
+.card {
+    position: relative;
+    padding: 10px;
+    margin: 10px 0;
+    min-height: 140px;
+}
+.card.emphas {
+    box-shadow: 0 0 13px 6px rgba(0,0,0,0.2);
+}
+.card-name, .card-text {
+    user-select: none;
+}
+card-name {
+    color: black;
+}
+.expand-button {
+    position: absolute;
+    right: 10px; top: 10px;
+    width: 20px; height: 20px;
+    text-align: center;
+    line-height: 20px;
+    cursor: pointer;
+    user-select: none;
+}
+.expand-button:hover {
+    background-color: coral;
+}
+.expand-list {
+  position: absolute;
+  list-style: none;
+  right: 11px; top: 21px;
+  background-color: white;
+  margin-left: 0;
+  padding-left: 0;
+  display: none;
+  box-shadow: 0 0 5px rgba(93,92,97,0.7);
+}
+.expand-list.exp {
+  display: block;
+}
+.menuBean {
+  width: 100%;
+  padding: 5px 10px 5px;
+  cursor: pointer;
+}
+.menuBean:hover {
+  color: orange;
+}
+
+/*Modal*/
+.modal {
+  width: 500px;
+  position: absolute;
+  top: 20%; left: 50%;
+  padding: 70px 40px 40px;
+  margin-left: -250px;
+  background-color: white;
+  border: 1px solid #5d5c61;
+  box-shadow: 0 0 12px 1px rgba(93,92,97,1);
+}
+.close-modal {
+    position: absolute;
+    top: 30px; right: 40px;
+}
+.text-field, .text-area, #color-select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px 10px;
+  margin: 10px 0;
+  border: 1px solid rgba(93,92,97,0.6);
+}
+.text-field:focus, .text-area:focus, #color-select:focus {
+  box-shadow: inset 0 0 5px 1px rgba(93,92,97,0.4);
+}
+
+.submit {
+  display: block;
+  width: 200px; height: 30px;
+  margin: 30px auto;
 }
