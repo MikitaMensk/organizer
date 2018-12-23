@@ -1,32 +1,14 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-//import Table from './Table';
-//import Form from './Form';
 import Board from './Board';
-import ModalColumn from './ModalColumn';
-import Modal from './Modal';
-import BackgroundSelect from './BackgroundSelect';
+import ModalColumn from './components/modals/ModalColumn';
+import ModalCard from './components/modals/ModalCard';
+import BackgroundSelect from './components/BackgroundSelect';
 
-class App extends Component {  
-    
+class App extends Component {
+
   state = {
-        /*characters: [{
-                'name': 'Charlie',
-                'job': 'Janitor'
-            },
-            {
-                'name': 'Mac',
-                'job': 'Bouncer'
-            },
-            {
-                'name': 'Dee',
-                'job': 'Aspring actress'
-            },
-            {
-                'name': 'Dennis',
-                'job': 'Bartender'
-        }],*/
         columns: [{
                 'id': 0,
                 'title': 'First',
@@ -94,17 +76,21 @@ class App extends Component {
         modals: [{
             title: 'Title',
             text: 'Text',
-            color: ''
+            color: '#7FDBFF'
         }],
         modalColumn: [{
             title: 'Enter title of column'
         }],
-  }; 
+  };
 
   componentDidMount() {
     window.addEventListener('load', this.handleLoad());
     this.updateCardText();
-  }  
+  }
+
+  componentDidUpdate() {
+    this.updateCardText();
+  }
 
   handleLoad() {
     setInterval(() => this.recordRegularState(), 25000);
@@ -113,7 +99,7 @@ class App extends Component {
   recordRegularState = () => {
     localStorage.setItem('state', JSON.stringify(this.state));
   }
-  
+
   updateCardText() {
     const letterWidth = 350;
     const allCards = document.getElementsByClassName('card-text');
@@ -131,34 +117,24 @@ class App extends Component {
       trimString = trimString + '...';
     }
     return trimString;
-  }  
+  }
 
   toggleModal = () => {
     this.setState({
       isOpen: !this.state.isOpen
     });
-  } 
-  
+  }
+
   toggleModalColumn = () => {
     this.setState({
       isOpenColumn: !this.state.isOpenColumn
     });
-  } 
+  }
 
-  /*removeCharacter = index => {
-    const { characters } = this.state;
-
-    this.setState({
-        characters: characters.filter((character, i) => { 
-            return i !== index;
-        })
-    });
-  }*/
-  
   addCard = (index, newCardobj) => {
       const { columns } = this.state;
-      
-      const arrayCopy = columns.slice();      
+
+      const arrayCopy = columns.slice();
       const thisColumn = arrayCopy[index];
       const cardList = thisColumn.cards;
       cardList.push(newCardobj);
@@ -166,34 +142,34 @@ class App extends Component {
       this.setState({
         columns: arrayCopy
     });
-  }  
-  
+  }
+
   editCard = (columnIndex, cardIndex, newCardobj) => {
-      const { columns } = this.state;      
-      const arrayCopy = columns.slice(); 
-      
+      const { columns } = this.state;
+      const arrayCopy = columns.slice();
+
       arrayCopy[columnIndex].cards[cardIndex].title = newCardobj.title;
       arrayCopy[columnIndex].cards[cardIndex].text = newCardobj.text;
       arrayCopy[columnIndex].cards[cardIndex].color = newCardobj.color;
-      arrayCopy[columnIndex].cards[cardIndex].exp = false; 
+      arrayCopy[columnIndex].cards[cardIndex].exp = false;
 
       this.setState({
         columns: arrayCopy
       });
-  }  
-  
+  }
+
   deleteCard = (cardIndex, e, columnIndex ) => {
       e.stopPropagation();
-      
-      const { columns } = this.state;      
-      const arrayCopy = columns.slice();      
+
+      const { columns } = this.state;
+      const arrayCopy = columns.slice();
       const thisColumn = arrayCopy[columnIndex];
       const cardList = thisColumn.cards;
       const columnsLength = arrayCopy.length;
       cardList.splice(cardIndex,1);
-      
-      arrayCopy[columnIndex].cards = cardList;      
-      
+
+      arrayCopy[columnIndex].cards = cardList;
+
       if(arrayCopy[columnsLength - 1].cards.length === 0){
           arrayCopy.splice(columnsLength - 1,1);
           this.setState({
@@ -203,28 +179,27 @@ class App extends Component {
       else {
          this.setState({
             columns: arrayCopy
-          }); 
-      }     
-      
-  }   
-  
-  emphasizeCard = (cardIndex, e, columnIndex ) => {      
+          });
+      }
+  }
+
+  emphasizeCard = (cardIndex, e, columnIndex ) => {
       e.stopPropagation();
-      
-      const { columns } = this.state;      
+
+      const { columns } = this.state;
       const arrayCopy = columns.slice();
       const thisColumn = arrayCopy[columnIndex];
       const currentColumn = thisColumn.cards.slice();
       const emphCard = currentColumn[cardIndex];
       let emphCardStatus = emphCard.emph;
-      
+
       if(emphCardStatus === true){
         emphCardStatus = false;
       }
       else {
         emphCardStatus = true;
       }
-      
+
       for(let s = 0;s<arrayCopy.length;s++){
         for(let m = 0;m<arrayCopy[s].cards.length;m++){
           arrayCopy[s].cards[m].emph = false;
@@ -236,11 +211,11 @@ class App extends Component {
           columns: arrayCopy
       });
   }
-  
+
   expandList = (cardIndex, e, columnIndex) => {
       e.stopPropagation();
-      
-      const { columns } = this.state; 
+
+      const { columns } = this.state;
       const arrayCopy = columns.slice();
       const currentColumn = arrayCopy[columnIndex].cards.slice();
       const expCard = currentColumn[cardIndex];
@@ -264,9 +239,9 @@ class App extends Component {
         columns: arrayCopy
       });
   }
-  
+
   addColumn = (modal) => {
-      const { columns } = this.state; 
+      const { columns } = this.state;
       const arrayCopy = columns.slice();
       const nextColumnIndex = arrayCopy.length;
       const addindArray = {
@@ -279,9 +254,9 @@ class App extends Component {
          columns: arrayCopy
       });
   }
-  
+
   moveUp() {
-      const { columns } = this.state; 
+      const { columns } = this.state;
       const arrayCopy = columns.slice();
       let emphasizedColumn =  0;
       let emphasizedCard =  0;
@@ -295,13 +270,13 @@ class App extends Component {
         }
       }
       const thisCard = arrayCopy[emphasizedColumn].cards[emphasizedCard];
-      
+
       const previousCardIndex = emphasizedCard - 1;
       if(previousCardIndex >= 0){
         const previousCard = arrayCopy[emphasizedColumn].cards[previousCardIndex];
-        arrayCopy[emphasizedColumn].cards[previousCardIndex] = thisCard; 
-        arrayCopy[emphasizedColumn].cards[emphasizedCard] = previousCard; 
-          
+        arrayCopy[emphasizedColumn].cards[previousCardIndex] = thisCard;
+        arrayCopy[emphasizedColumn].cards[emphasizedCard] = previousCard;
+
         this.setState({
             columns: arrayCopy
         });
@@ -309,7 +284,7 @@ class App extends Component {
   }
 
   moveDown() {
-      const { columns } = this.state; 
+      const { columns } = this.state;
       const arrayCopy = columns.slice();
       let emphasizedColumn =  0;
       let emphasizedCard =  0;
@@ -323,13 +298,13 @@ class App extends Component {
         }
       }
       const thisCard = arrayCopy[emphasizedColumn].cards[emphasizedCard];
-      
+
       const nextCardIndex = emphasizedCard + 1;
       if(nextCardIndex < arrayCopy[emphasizedColumn].cards.length){
         const nextCard = arrayCopy[emphasizedColumn].cards[nextCardIndex];
-        arrayCopy[emphasizedColumn].cards[nextCardIndex] = thisCard; 
-        arrayCopy[emphasizedColumn].cards[emphasizedCard] = nextCard; 
-          
+        arrayCopy[emphasizedColumn].cards[nextCardIndex] = thisCard;
+        arrayCopy[emphasizedColumn].cards[emphasizedCard] = nextCard;
+
         this.setState({
             columns: arrayCopy
         });
@@ -337,7 +312,7 @@ class App extends Component {
   }
 
   moveLeft() {
-      const { columns } = this.state; 
+      const { columns } = this.state;
       const arrayCopy = columns.slice();
       let emphasizedColumn =  0;
       let emphasizedCard =  0;
@@ -351,7 +326,7 @@ class App extends Component {
         }
       }
       const thisCard = arrayCopy[emphasizedColumn].cards[emphasizedCard];
-      
+
       const previousColumnIndex = emphasizedColumn - 1;
       if(previousColumnIndex >= 0){
         arrayCopy[emphasizedColumn].cards.splice(emphasizedCard,1);
@@ -364,7 +339,7 @@ class App extends Component {
   }
 
   moveRight() {
-      const { columns } = this.state; 
+      const { columns } = this.state;
       const arrayCopy = columns.slice();
       let emphasizedColumn =  0;
       let emphasizedCard =  0;
@@ -378,7 +353,7 @@ class App extends Component {
         }
       }
       const thisCard = arrayCopy[emphasizedColumn].cards[emphasizedCard];
-      
+
       const nextColumnIndex = emphasizedColumn + 1;
       if(nextColumnIndex < arrayCopy.length){
         arrayCopy[emphasizedColumn].cards.splice(emphasizedCard,1);
@@ -389,18 +364,14 @@ class App extends Component {
         });
       }
   }
-    
-  /*handleSubmit = character => {
-        this.setState({characters: [...this.state.characters, character]});
-  } */ 
-  
+
   modalInvoke = (columnIndex, type, cardIndex)  => {
       this.toggleModal();
       sessionStorage.setItem('column', columnIndex);
       sessionStorage.setItem('card', cardIndex);
       sessionStorage.setItem('type', type);
       if(type === 'EDIT'){
-          const { columns } = this.state; 
+          const { columns } = this.state;
           const arrayCopy = columns.slice();
           const thisCard = arrayCopy[columnIndex].cards[cardIndex];
           let modalObj = {};
@@ -408,59 +379,56 @@ class App extends Component {
           modalObj.text = thisCard.text;
           modalObj.color = thisCard.color;
           thisCard.exp = false;
-          
+
           this.setState({
               modals: [modalObj]
           });
       }
   }
-  
+
   modalColumnInvoke = (columnIndex)  => {
       this.toggleModalColumn();
       sessionStorage.setItem('column-index', columnIndex);
 
-      const { columns } = this.state; 
+      const { columns } = this.state;
       const arrayCopy = columns.slice();
       const thisColumn = arrayCopy[columnIndex];
       let modalObj = {};
       modalObj.title = thisColumn.title;
-          
+
       this.setState({
          modalColumn: [modalObj]
       });
   }
-    
+
   modalSubmit = modal => {
       const columnIndex = sessionStorage.getItem('column');
       const cardIndex = sessionStorage.getItem('card');
       const type = sessionStorage.getItem('type');
-     
+
       if(type === 'ADD'){
-        this.setState({modals: [modal]});
+        //this.setState({modals: [modal]});
         this.addCard(columnIndex, modal);
       }
       else if(type === 'EDIT'){
-        this.setState({modals: [modal]});
-        this.editCard(columnIndex, cardIndex, modal); 
+        //this.setState({modals: [modal]});
+        this.editCard(columnIndex, cardIndex, modal);
       }
-      
+
       this.toggleModal();
       sessionStorage.clear();
   }
-  
-  modalSubmitColumn = modal => {
 
+  modalSubmitColumn = modal => {
       this.setState({modalColumn: [modal]});
-      this.addColumn(modal);      
+      this.addColumn(modal);
       this.toggleModalColumn();
-      
   }
-  
-      
-  render() {  
-      
+
+  render() {
+
     const that = this;
-      
+
     document.onkeydown = checkKey;
     function checkKey(e) {
         e = e || window.event;
@@ -475,9 +443,9 @@ class App extends Component {
         }
         else if (e.keyCode === 39) {
            that.moveRight();
-        }        
+        }
         else if (e.keyCode === 13) {
-            const { columns } = that.state; 
+            const { columns } = that.state;
             const arrayCopy = columns.slice();
             let emphasizedColumn =  0;
             let emphasizedCard =  0;
@@ -491,9 +459,9 @@ class App extends Component {
            }
            that.modalInvoke(emphasizedColumn, 'EDIT', emphasizedCard);
         }
-        
-    } 
- 
+
+    }
+
     return (
       <div className="container">
         <header className="header">
@@ -501,15 +469,13 @@ class App extends Component {
           <BackgroundSelect />
           <h2 className="title">Planning</h2><img className="logo" width="40" src={logo} alt="" />
         </header>
-        
+
         <Board columnsData={this.state.columns} modalInvoke={this.modalInvoke} deleteCard={this.deleteCard} expandList={this.expandList} emphasizeCard={this.emphasizeCard}   />
         <ModalColumn show={this.state.isOpenColumn} onClose={this.toggleModalColumn} handleSubmit={this.modalSubmitColumn} title={this.state.modalColumn[0].title} />
-        <Modal show={this.state.isOpen} onClose={this.toggleModal} handleSubmit={this.modalSubmit} title={this.state.modals[0].title} text={this.state.modals[0].text} />
+        <ModalCard show={this.state.isOpen} onClose={this.toggleModal} handleSubmit={this.modalSubmit} title={this.state.modals[0].title} text={this.state.modals[0].text} />
       </div>
     );
   }
-      
+
 }
 export default App;
-/*<Table characterData={this.state.characters} removeCharacter={this.removeCharacter}  />*/
-        /*<Form handleSubmit={this.handleSubmit} />*/

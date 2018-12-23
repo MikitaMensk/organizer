@@ -1,38 +1,44 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-class Modal extends Component { 
+class ModalCard extends Component {
     constructor(props) {
         super(props);
         this.initialState = {
-             title: '',
-             text: '',     
+             title: 'title',
+             text: 'Text',
              color: ''
         };
         this.state = this.initialState;
     }
-    
+
+    retrieveTitleValue = event => {
+      let value = event.target.value;
+      return value;
+    }
+
     handleChange = event => {
         const {name, value} = event.target;
-
+        console.log(name,value);
         this.setState({
             [name] : value
         });
     }
-    
+
     submitForm = () => {
       this.props.handleSubmit(this.state);
       this.setState(this.initialState);
     }
-        
-    render() { 
-        
+
+    render() {
+
         const { title, text } = this.state;
-        
+
         if(!this.props.show) {
           return null;
         }
-        
+
+
         return (
             <div className="modal" id="modal" data-column="0" data-card="0" data-type="">
               <button onClick={this.props.onClose} className="close-modal">
@@ -54,10 +60,10 @@ class Modal extends Component {
     }
 }
 
-Modal.propTypes = {
+ModalCard.propTypes = {
   onClose: PropTypes.func.isRequired,
   show: PropTypes.bool,
   children: PropTypes.node
 };
 
-export default Modal;
+export default ModalCard;
